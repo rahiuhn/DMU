@@ -19,7 +19,7 @@ gtools, mosaic, future, future.apply, missforest, pkgcond, bnstruct, DMwR, VIM, 
 ```
 
 ## Generate simulated dataset
-The algorithm allows the user to generate an artificial dataset but with limited functionality. The dataset generated contains 20 input features ```varnum```. 80% of missing values ```maxmiss_per``` in each of the 20 features are missing completely at random. The correlation among 20 features lies in the range of [-0.5,0.5]. Currently, only first three features are allowed to have effect on the model. The coefficient values are (0.2, 0.3, 0.4) with interaction coefficient of 10. The training dataset generated has no complete rows (NCR).
+The algorithm allows the user to generate an artificial dataset but with limited functionality. The dataset generated contains 20 input features ```varnum```. 80% of missing values ```maxmiss_per``` in each of the 20 features are missing completely at random. The correlation among 20 features lies in the range of [-0.5,0.5]. Currently, only first three features are allowed to have effect on the model. The coefficient values are (0.2, 0.3, 0.4) with intercept coefficient of 10. The training dataset generated has no complete rows (NCR).
 ```
 dataset = data_sim(varnum =20, # 20 features 
                    maxmiss_per= 0.8, # 80% missing per column 
