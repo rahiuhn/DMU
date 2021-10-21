@@ -1,1 +1,1 @@
-# DMU
+# Dynamic Model Updating (DMU); A short tutorial
