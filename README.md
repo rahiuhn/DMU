@@ -1,7 +1,7 @@
 # Dynamic Model Updating (DMU): A short tutorial
 Dynamic model updating (DMU) approach develops statistical models with missing data. DMU uses only the information available in the dataset to prepare the statistical models. The basic framework is to divide the dataset into smaller datasets containing a smaller number of predictors but complete information, and sequentially build the model for each dataset followed by updating the estimates of the predictors after each model (https://doi.org/10.1186/s12859-021-04138-z).
 
-This tutorial will explain how to run the DMU code. The current DMU algorithm can only provide the predictive performance of the test data. It does not provide the final model built for the prediction.
+This tutorial will explain how to run the DMU code. The current DMU algorithm can only provide the predictive performance of the test data. It does not provide the final model built for the prediction. The current DMU algorithm uses Bayesian Regression for coefficient estimation.
 
 ## Installing the packages
 This algorithm uses many R packages which needs to be installed or loaded before using this algorithm. 
@@ -19,7 +19,7 @@ gtools, mosaic, future, future.apply, missforest, pkgcond, bnstruct, DMwR, VIM, 
 ```
 
 ## Generate simulated dataset
-The algorithm allows the user to generate an artificial dataset but with limited functionality. The dataset generated contains 20 input features ```varnum``` with 80% of missing values ```maxmiss_per``` in each of the 20 features is missing completely at random. The correlation among 20 features lies in the range of [-0.5,0.5]. Currently, only first three features are allowed to have effect on the model. The coefficient values are (0.2, 0.3, 0.4) with interaction coefficient of 10. The training dataset generated has no complete rows (NCR).
+The algorithm allows the user to generate an artificial dataset but with limited functionality. The dataset generated contains 20 input features ```varnum```. 80% of missing values ```maxmiss_per``` in each of the 20 features are missing completely at random. The correlation among 20 features lies in the range of [-0.5,0.5]. Currently, only first three features are allowed to have effect on the model. The coefficient values are (0.2, 0.3, 0.4) with interaction coefficient of 10. The training dataset generated has no complete rows (NCR).
 ```
 dataset = data_sim(varnum =20, # 20 features 
                    maxmiss_per= 0.8, # 80% missing per column 
@@ -38,7 +38,7 @@ write.csv(truetrain,"originaldata_SCR_Art.csv")
 ```
 
 ## Run DMU and compare its performance
-Once the training and test dataset are obtained. One can run the DMU algorithm. The function ```sim_fit``` allows the user to run and compare 6 missing imputation methods namely DMU (```DMU```), mean imputation (```mean```), kNN impute (```knn```), Random Forest impute (```rf```), complete case analysis (```reg```), mice (only pmm) (```mice```). Additionally, it provides the true model ```true``` if ```truetrain``` variable contains complete data. In case we want to add some complete rows to training data to change it from NCR to SCR (Some complete rows) dataset, ```datatype``` should be assigned value ```createSCR``` which will randomly transfer 50 samples with complete information from test data to training data. Otherwise, give ```datatype``` suitable value like ```NCR``` or ```SCR```. 
+Once the training and test dataset are obtained. One can run the DMU algorithm. The function ```sim_fit``` allows the user to run and compare 6 missing imputation methods namely DMU (```DMU```), mean imputation (```mean```), kNN impute (```knn```), Random Forest impute (```rf```), complete case analysis (```reg```), mice (only pmm) (```mice```). Additionally, it provides the true model ```true``` if ```truetrain``` variable contains complete data. In case we want to add some complete rows to training data to change it from NCR to SCR (Some complete rows), ```datatype``` should be assigned value ```"createSCR"``` which will randomly transfer 50 samples with complete information from test data to training data. Otherwise, give ```datatype``` suitable value like ```"NCR"``` or ```"SCR"```. 
 ```
 # Get Parameters
 clustersize= 4 # number of small complete dataset that will created for DMU
