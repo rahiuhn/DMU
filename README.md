@@ -52,14 +52,14 @@ res$datatype = "SCR"
 finalres = res
 finalres
 Output:
-          Corr        MSE   rsquare         Approach seed datatype
-DMU  0.8287515 0.10094285 0.7324693        beta_Prop    1      SCR
-knn  0.8247175 0.09526723 0.6425749         beta_knn    1      SCR
-mice 0.8496872 0.17535876 0.1247191 beta_Imputed_Reg    1      SCR
-reg  0.8278213 0.09995927 0.7302156         beta_Reg    1      SCR
-mean 0.8480322 0.11734702 0.7806281        beta_mean    1      SCR
-true 0.8810794 0.06532334 0.7796712        beta_true    1      SCR
-
+            MSE         Approach seed datatype
+DMU  0.10094285        beta_Prop    1      SCR
+knn  0.09526723         beta_knn    1      SCR
+mice 0.17535876 beta_Imputed_Reg    1      SCR
+reg  0.09995927         beta_Reg    1      SCR
+mean 0.11734702        beta_mean    1      SCR
+rf   0.10774280          beta_Rf    1      SCR
+true 0.06532334        beta_true    1      SCR
 ```
 
 ## Hyperparameter optimization
