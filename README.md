@@ -38,7 +38,7 @@ write.csv(truetrain,"originaldata_SCR_Art.csv")
 ```
 
 ## Run DMU and compare its performance
-Once the training and test dataset are obtained. One can run the DMU algorithm. The function ```sim_fit``` allows the user to run and compare 6 missing imputation methods namely DMU (```DMU```), mean imputation (```mean```), kNN impute (```knn```), Random Forest impute (```rf```), complete case analysis (```reg```), mice (only pmm) (```mice```). Additionally, it provides the true model if ```truetrain``` variable contains complete data. In case we want to add some complete rows to training data to change it from NCR to SCR (Some complete rows) dataset, ```datatype``` should be assigned value ```createSCR``` which will randomly transfer 50 samples with complete information from test data to training data.
+Once the training and test dataset are obtained. One can run the DMU algorithm. The function ```sim_fit``` allows the user to run and compare 6 missing imputation methods namely DMU (```DMU```), mean imputation (```mean```), kNN impute (```knn```), Random Forest impute (```rf```), complete case analysis (```reg```), mice (only pmm) (```mice```). Additionally, it provides the true model ```true``` if ```truetrain``` variable contains complete data. In case we want to add some complete rows to training data to change it from NCR to SCR (Some complete rows) dataset, ```datatype``` should be assigned value ```createSCR``` which will randomly transfer 50 samples with complete information from test data to training data. Otherwise, give ```datatype``` suitable value like ```NCR``` or ```SCR```. 
 ```
 # Get Parameters
 clustersize= 4 # number of small complete dataset that will created for DMU
@@ -51,6 +51,7 @@ res = sim_fit(x = para, traindata= traindata, testdata = testdata, truetrain = t
 res$datatype = "SCR"
 finalres = res
 finalres
+Output:
           Corr        MSE   rsquare         Approach seed datatype
 DMU  0.8287515 0.10094285 0.7324693        beta_Prop    1      SCR
 knn  0.8247175 0.09526723 0.6425749         beta_knn    1      SCR
@@ -58,27 +59,18 @@ mice 0.8496872 0.17535876 0.1247191 beta_Imputed_Reg    1      SCR
 reg  0.8278213 0.09995927 0.7302156         beta_Reg    1      SCR
 mean 0.8480322 0.11734702 0.7806281        beta_mean    1      SCR
 true 0.8810794 0.06532334 0.7796712        beta_true    1      SCR
+
 ```
 
 ## Hyperparameter optimization
-The algorithm allows the user to generate an artificial dataset but with limited functionality. The dataset generated contains 20 input features ```varnum``` with 80% of missing values ```maxmiss_per``` in each of the 20 features is missing completely at random. The correlation among 20 features lies in the range of [-0.5,0.5]. Currently, only first three features are allowed to have effect on the model. The coefficient values are (0.2, 0.3, 0.4) with interaction coefficient of 10.
+In case, the number of small datasets, k ```clustersize``` is not known. Algorithm can provide its optimal value using genetic algorithm based hyperparameter optimization function ```hyperpara-optimize```.
 ```
-dataset = data_sim(varnum =20, # 20 features 
-                   maxmiss_per= 0.8, # 80% missing per column 
-                   corr_seed=1, # seed number to ensure reproducibility
-                   testsize = 1050, # sample size of test data
-                   samplesize=4200, # total number of samples generated training +test samples
-                   effect="Mar", # Only marginal effects are present in the original model. 
-                   max_corr= 0.5) # Correlation among features will lie in between [-0.5, 0.5]
-traindata = dataset$train
-testdata = dataset$test
-truetrain = dataset$truedata
+clustersize = hyperpara_optimize(optimtype = "opt_GA", seed=1, traindata= traindata, testdata = testdata, datatype = "createSCR")
+clustersize
+Output: 4
+```
 
-write.csv(traindata,"traindata_SCR_Art.csv")
-write.csv(testdata,"testdata_SCR_Art.csv")
-write.csv(truetrain,"originaldata_SCR_Art.csv")
-```
 ## Limitations of Algorithm
 1) This algorithm can only process continuous data
 2) Currently, output is only the predictive performance in three metrics namely correlation, mean square error and r-squared
-3) It doe not directly provide the final model or feature weights. However, one can determine the weights by looking at function ```DMU```. The result is stored in the data.frame ```bay_reg```:
+3) It doe not directly provide the final model or feature weights. However, one can determine the weights by looking at function ```DMU```. The result is stored in the data.frame ```bay_reg```.
