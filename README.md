@@ -73,4 +73,4 @@ Output: 4
 ## Limitations of Algorithm
 1) This algorithm can only process continuous data
 2) Currently, output is only the predictive performance in three metrics namely correlation, mean square error and r-squared
-3) It doe not directly provide the final model or feature weights. However, one can determine the weights by looking at function ```DMU```. The result is stored in the data.frame ```bay_reg```.
+3) It does not directly provide the final model or feature weights. However, one can determine the weights by looking at function ```DMU```. The result is stored in the data.frame ```bay_reg```.
